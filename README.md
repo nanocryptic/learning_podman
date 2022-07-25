@@ -9,3 +9,5 @@ Learning Podman interactively
 1. [Podman Machine Setup](./01_Podman_Setup.ipynb)
 1. [Podman First Steps](./02_Podman_First_Steps.ipynb)
 1. [Volume Mounts](./03_Container_Volume_Mounts.ipynb)
+1. [Pods](./04_Pods.ipynb)
+1. [Kubernetes on Podman with Minikube](./05_Minikube_on_Podman.ipynb)
