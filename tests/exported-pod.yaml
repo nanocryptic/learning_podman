@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: exported-dynamic-webserver
+  name: exported-dynamic-webserver
+  namespace: default
+spec:
+  containers:
+    - image: docker.io/library/httpd:2.4
+      imagePullPolicy: IfNotPresent
+      name: apache-httpd
+      ports:
+        - containerPort: 80
+          hostPort: 8080
+          protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+            - CAP_MKNOD
+            - CAP_NET_RAW
+            - CAP_AUDIT_WRITE
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: webserver-data-pvc
+    - command:
+        - sh
+        - -c
+        - while true; do echo "Index Updated @$(date)" >> /usr/local/apache2/htdocs/index.html;
+          sleep 10; done
+      image: docker.io/library/alpine:latest
+      imagePullPolicy: Always
+      name: apache-httpd-index-updater
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+            - CAP_MKNOD
+            - CAP_NET_RAW
+            - CAP_AUDIT_WRITE
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: webserver-data-pvc
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+    - command:
+        - sh
+        - -c
+        - echo "Static Website Init" > /usr/local/apache2/htdocs/index.html
+      image: docker.io/library/busybox:latest
+      imagePullPolicy: Always
+      name: apache-httpd-init
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+            - CAP_MKNOD
+            - CAP_NET_RAW
+            - CAP_AUDIT_WRITE
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: webserver-data-pvc
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Never
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  volumes:
+    - name: webserver-data-pvc
+      persistentVolumeClaim:
+        claimName: webserver-data
