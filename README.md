@@ -13,3 +13,4 @@ Learning Podman interactively
 1. [Kubernetes on Podman with Minikube](./05_Minikube_on_Podman.ipynb)
 1. [Playing Kubernetes Pods in Podman](./06_Play_Kubernetes_Pods.ipynb)
 1. [Docker Compatibility](./07_Docker_Compatibility_and_Compose.ipynb)
+1. [Bonus: Building and Pushing to local Registry in Minikube](./08_Bonus_Building_and_Pushing_Images_to_Minikube.ipynb)
