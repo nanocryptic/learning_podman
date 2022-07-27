@@ -1,6 +1,17 @@
 # Learning Podman
 
-Learning Podman interactively
+`alias docker=podman`
+
+Podman (Pod Manager)
+![Podman](./img/podman-logo.svg)
+_is a lot more than just a replacement for_
+![Docker](./img/docker-logo.svg)
+
+
+## What is this all about?
+
+This is a collection of noteboots to learning Podman interactively.
+
 
 ## Notebooks
 
