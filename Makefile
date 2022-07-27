@@ -1,8 +1,6 @@
-.phony : start install_jupyter_tools trust
+.phony : start install_jupyter_tools trust markdown markdown_no_color
 
-INSTALL_PODMAN_NB = 00_Install_Podman.ipynb
-INSTALL_JUPYTER_NB = 00_Install_Jupyter.ipynb
-PODMAN_SETUP_NB = 01_Podman_Setup.ipynb
+NB_EXPORT_FORMAT ?= markdown
 
 start: trust
 	jupyter notebook
@@ -14,3 +12,10 @@ trust:
 install_jupyter_tools:
 	pip3 install -r jupyter_tools/requirements.txt
 
+markdown:
+	jupyter nbconvert *.ipynb --to markdown
+	mkdir -p doc
+	mv *_*.md doc
+
+markdown_no_color: markdown
+	./scripts/clean_color_escape_chars.sh
